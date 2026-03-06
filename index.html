@@ -12,11 +12,10 @@
   --grey: #6B6B68;
   --light: #E8E8E4;
   --rule: #DDDDD8;
+  --sidebar-w: 200px;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-
 body {
   background: var(--white);
   color: var(--black);
@@ -24,56 +23,115 @@ body {
   font-size: 18px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  min-height: 100vh;
 }
 
-/* Nav */
-nav {
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  border-right: 1px solid var(--rule);
   position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  background: var(--white);
-  border-bottom: 1px solid var(--rule);
-  padding: 0 48px;
-  height: 56px;
+  top: 0; left: 0; bottom: 0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  padding: 40px 0;
+  background: var(--white);
+  z-index: 50;
 }
-.nav-name {
+.sidebar-name {
   font-family: 'DM Mono', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--black);
   text-decoration: none;
+  padding: 0 28px;
+  margin-bottom: 40px;
+  display: block;
+  line-height: 1.5;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
 }
-.nav-links {
-  display: flex;
-  gap: 32px;
-  list-style: none;
+.nav-section { padding: 0 28px; margin-bottom: 32px; }
+.nav-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--light);
+  margin-bottom: 8px;
+  display: block;
 }
-.nav-links a {
+.nav-item {
+  display: block;
   font-family: 'DM Mono', monospace;
   font-size: 0.68rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--grey);
+  text-decoration: none;
+  padding: 6px 0;
+  transition: color 0.15s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover { color: var(--black); }
+.nav-item.active { color: var(--black); font-weight: 500; }
+.nav-sub { padding-left: 12px; display: none; margin-top: 2px; }
+.nav-sub.open { display: block; }
+.nav-sub-item {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: var(--grey);
+  text-decoration: none;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: color 0.12s;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+.nav-sub-item:hover { color: var(--black); }
+.nav-sub-item.active { color: var(--black); }
+.nav-arrow { float: right; transition: transform 0.2s; font-style: normal; }
+.nav-arrow.open { transform: rotate(90deg); }
+.sidebar-links {
+  margin-top: auto;
+  padding: 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sidebar-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
   color: var(--grey);
   text-decoration: none;
   transition: color 0.15s;
 }
-.nav-links a:hover { color: var(--black); }
+.sidebar-link:hover { color: var(--black); }
 
-/* Layout */
-main {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 32px;
+/* Main */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  max-width: 760px;
+  padding: 80px 56px 100px;
 }
-section {
-  padding: 96px 0 80px;
-  border-bottom: 1px solid var(--rule);
-}
-section:last-of-type { border-bottom: none; }
+.page { display: none; }
+.page.active { display: block; }
 
 /* Section label */
 .section-label {
@@ -87,15 +145,9 @@ section:last-of-type { border-bottom: none; }
   align-items: center;
   gap: 16px;
 }
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--rule);
-}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
 
 /* Hero */
-#hero { padding-top: 156px; }
 .hero-label {
   font-family: 'DM Mono', monospace;
   font-size: 0.68rem;
@@ -107,7 +159,7 @@ section:last-of-type { border-bottom: none; }
   animation: fadeUp 0.6s ease 0.1s forwards;
 }
 h1 {
-  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -125,13 +177,7 @@ h1 em { font-style: italic; color: var(--grey); }
   opacity: 0;
   animation: fadeUp 0.6s ease 0.3s forwards;
 }
-.hero-links {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  opacity: 0;
-  animation: fadeUp 0.6s ease 0.4s forwards;
-}
+.hero-cta { opacity: 0; animation: fadeUp 0.6s ease 0.4s forwards; }
 .btn {
   display: inline-block;
   font-family: 'DM Mono', monospace;
@@ -143,6 +189,10 @@ h1 em { font-style: italic; color: var(--grey); }
   border: 1px solid var(--black);
   color: var(--black);
   transition: all 0.15s;
+  cursor: pointer;
+  background: none;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 .btn:hover { background: var(--black); color: var(--white); }
 .btn-ghost { border-color: var(--rule); color: var(--grey); }
@@ -154,447 +204,234 @@ h1 em { font-style: italic; color: var(--grey); }
   grid-template-columns: 150px 1fr;
   gap: 0 40px;
   margin-bottom: 52px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
+.exp-item.visible { opacity: 1; transform: translateY(0); }
 .exp-item:last-child { margin-bottom: 0; }
-.exp-date {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.06em;
-  color: var(--grey);
-  line-height: 1.5;
-  padding-top: 4px;
-}
-.exp-company {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.06em;
-  color: var(--black);
-  font-weight: 500;
-  margin-top: 4px;
-}
-.exp-title {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 8px;
-  line-height: 1.3;
-}
-.exp-desc {
-  font-size: 0.9rem;
-  color: var(--grey);
-  line-height: 1.65;
-}
-.exp-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
-}
-.tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.56rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  background: var(--light);
-  color: var(--grey);
-}
+.exp-date { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em; color: var(--grey); line-height: 1.5; padding-top: 4px; }
+.exp-company { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em; color: var(--black); font-weight: 500; margin-top: 4px; }
+.exp-title { font-size: 1rem; font-weight: 500; margin-bottom: 8px; line-height: 1.3; }
+.exp-desc { font-size: 0.9rem; color: var(--grey); line-height: 1.65; }
+.exp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.tag { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; background: var(--light); color: var(--grey); }
 
 /* Education */
 .edu-card {
   border: 1px solid var(--rule);
   padding: 40px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
-.edu-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 32px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--rule);
-}
-.edu-school {
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 6px;
-}
-.edu-location {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.06em;
-  color: var(--grey);
-}
-.edu-gpa {
-  text-align: right;
-}
-.edu-gpa-number {
-  font-family: 'EB Garamond', serif;
-  font-size: 2.4rem;
-  font-weight: 400;
-  line-height: 1;
-}
-.edu-gpa-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-top: 4px;
-}
-.edu-degrees {
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  gap: 0 48px;
-  margin-bottom: 28px;
-}
+.edu-card.visible { opacity: 1; transform: translateY(0); }
+.edu-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
+.edu-school { font-size: 1.1rem; font-weight: 500; margin-bottom: 6px; }
+.edu-location { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em; color: var(--grey); }
+.edu-gpa-number { font-size: 2.4rem; font-weight: 400; line-height: 1; }
+.edu-gpa-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-top: 4px; text-align: right; }
+.edu-degrees { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0 48px; margin-bottom: 28px; }
 .edu-divider { background: var(--rule); }
-.edu-degree-badge {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 12px;
-}
-.edu-degree-title {
-  font-size: 1.25rem;
-  font-weight: 400;
-  line-height: 1.2;
-  margin-bottom: 4px;
-}
-.edu-degree-sub {
-  font-size: 0.95rem;
-  font-style: italic;
-  color: var(--grey);
-  margin-bottom: 8px;
-}
-.edu-degree-detail {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.04em;
-  color: var(--grey);
-  line-height: 1.6;
-}
-.edu-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding-top: 24px;
-  border-top: 1px solid var(--rule);
-}
+.edu-degree-badge { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 12px; }
+.edu-degree-title { font-size: 1.25rem; font-weight: 400; line-height: 1.2; margin-bottom: 4px; }
+.edu-degree-sub { font-size: 0.95rem; font-style: italic; color: var(--grey); margin-bottom: 8px; }
+.edu-degree-detail { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.04em; color: var(--grey); line-height: 1.6; }
+.edu-tags { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 24px; border-top: 1px solid var(--rule); }
 
 /* Skills */
-.skills-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px 60px;
-}
-.skill-group-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--rule);
-}
-.skill-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-.skill-list li {
-  font-size: 0.9rem;
-  color: var(--black);
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 60px; }
+.skill-group { opacity: 0; transform: translateY(16px); transition: opacity 0.45s ease, transform 0.45s ease; }
+.skill-group.visible { opacity: 1; transform: translateY(0); }
+.skill-group-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+.skill-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.skill-list li { font-size: 0.9rem; color: var(--black); display: flex; align-items: center; gap: 10px; }
+.skill-list li::before { content: ''; width: 3px; height: 3px; background: var(--grey); border-radius: 50%; flex-shrink: 0; }
+
+/* Project list */
+.project-list { display: flex; flex-direction: column; gap: 2px; }
+.project-list-item {
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.15s, background 0.15s;
 }
-.skill-list li::before {
-  content: '';
-  width: 3px;
-  height: 3px;
-  background: var(--grey);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.project-list-item.visible { opacity: 1; transform: translateY(0); }
+.project-list-item:hover { border-color: var(--black); background: #F5F5F2; }
+.project-list-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
+.project-list-title { font-size: 1.05rem; font-weight: 500; }
+.project-list-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.project-list-arrow { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--grey); flex-shrink: 0; margin-left: 20px; }
 
-/* Project */
-.project-card {
-  border: 1px solid var(--rule);
-  padding: 40px;
-  transition: border-color 0.2s;
-}
-.project-card:hover { border-color: var(--black); }
-.project-eyebrow {
+/* Project detail */
+.project-detail { display: none; }
+.project-detail.active { display: block; }
+.project-back {
   font-family: 'DM Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 16px;
-}
-.project-title {
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin-bottom: 16px;
-  line-height: 1.2;
-}
-.project-title em { font-style: italic; color: var(--grey); }
-.project-desc {
-  font-size: 0.92rem;
-  color: var(--grey);
-  line-height: 1.75;
-  margin-bottom: 28px;
-}
-.project-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border: 1px solid var(--rule);
-  margin-bottom: 28px;
-}
-.project-stat {
-  padding: 18px 20px;
-  border-right: 1px solid var(--rule);
-}
-.project-stat:last-child { border-right: none; }
-.project-stat-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.56rem;
+  font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--grey);
-  margin-bottom: 6px;
-}
-.project-stat-value {
-  font-size: 0.88rem;
-  color: var(--black);
-  line-height: 1.4;
-}
-.project-bullets {
-  list-style: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 40px;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 28px;
-}
-.project-bullets li {
-  font-size: 0.9rem;
-  color: var(--grey);
-  padding-left: 18px;
-  position: relative;
-  line-height: 1.55;
-}
-.project-bullets li::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  color: var(--black);
-  font-size: 0.78rem;
-  top: 2px;
-}
-.project-links { display: flex; gap: 12px; }
-
-/* Contact */
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-top: 1px solid var(--rule);
-}
-.contact-item {
-  padding: 28px 0;
-  border-bottom: 1px solid var(--rule);
-}
-.contact-item:nth-child(odd) { padding-right: 40px; }
-.contact-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--grey);
-  margin-bottom: 8px;
-}
-.contact-value {
-  font-size: 0.95rem;
-  color: var(--black);
-  text-decoration: none;
+  align-items: center;
+  gap: 8px;
   transition: color 0.15s;
 }
-.contact-value:hover { color: var(--grey); }
+.project-back:hover { color: var(--black); }
+.project-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 16px; }
+.project-title { font-size: 1.8rem; font-weight: 400; margin-bottom: 16px; line-height: 1.15; }
+.project-title em { font-style: italic; color: var(--grey); }
+.project-desc { font-size: 0.92rem; color: var(--grey); line-height: 1.75; margin-bottom: 28px; }
+.project-stats { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--rule); margin-bottom: 28px; }
+.project-stat { padding: 16px 20px; border-right: 1px solid var(--rule); }
+.project-stat:last-child { border-right: none; }
+.project-stat-label { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
+.project-stat-value { font-size: 0.88rem; color: var(--black); line-height: 1.4; }
+.project-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.project-bullets li { font-size: 0.9rem; color: var(--grey); padding-left: 18px; position: relative; line-height: 1.55; }
+.project-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--black); font-size: 0.78rem; top: 2px; }
+.project-links { display: flex; gap: 12px; flex-wrap: wrap; }
 
-/* Footer */
-footer {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 40px 32px;
-}
-footer p {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  color: var(--grey);
-}
+/* Contact */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--rule); }
+.contact-item { padding: 28px 0; border-bottom: 1px solid var(--rule); opacity: 0; transform: translateY(12px); transition: opacity 0.4s ease, transform 0.4s ease; }
+.contact-item.visible { opacity: 1; transform: translateY(0); }
+.contact-item:nth-child(odd) { padding-right: 40px; }
+.contact-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 8px; }
+.contact-value { font-size: 0.95rem; color: var(--black); text-decoration: none; transition: color 0.15s; }
+.contact-value:hover { color: var(--grey); }
 
 /* Animations */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* Responsive */
-@media (max-width: 640px) {
-  nav { padding: 0 20px; }
-  .nav-links { display: none; }
-  main { padding: 0 20px; }
+@media (max-width: 700px) {
+  .sidebar { width: 100%; min-height: auto; position: relative; padding: 20px; border-right: none; border-bottom: 1px solid var(--rule); }
+  .main { margin-left: 0; padding: 40px 24px; }
   .exp-item { grid-template-columns: 1fr; gap: 4px; }
   .skills-grid { grid-template-columns: 1fr; gap: 32px; }
   .project-stats { grid-template-columns: 1fr; }
-  .project-stat { border-right: none; border-bottom: 1px solid var(--rule); }
-  .project-stat:last-child { border-bottom: none; }
-  .contact-grid { grid-template-columns: 1fr; }
   .edu-degrees { grid-template-columns: 1fr; gap: 28px; }
   .edu-divider { display: none; }
   .edu-header { flex-direction: column; gap: 16px; }
+  .contact-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="#hero" class="nav-name">Vincent Ricigliano</a>
-  <ul class="nav-links">
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+<nav class="sidebar">
+  <button class="sidebar-name" onclick="showPage('home')">Vincent<br>Ricigliano</button>
+
+  <div class="nav-section">
+    <span class="nav-section-label">Menu</span>
+    <button class="nav-item active" onclick="showPage('home')" id="nav-home">Home</button>
+    <button class="nav-item" onclick="showPage('experience')" id="nav-experience">Experience</button>
+    <button class="nav-item" onclick="showPage('education')" id="nav-education">Education</button>
+    <button class="nav-item" onclick="showPage('skills')" id="nav-skills">Skills</button>
+    <button class="nav-item" onclick="toggleProjects()" id="nav-projects">Projects <i class="nav-arrow" id="projects-arrow">›</i></button>
+    <div class="nav-sub" id="projects-sub">
+      <button class="nav-sub-item" onclick="showProject('huckberry')" id="subnav-huckberry">Huckberry Analyzer</button>
+      <button class="nav-sub-item" onclick="showProject('concordance')" id="subnav-concordance">Concordance Tool</button>
+    </div>
+    <button class="nav-item" onclick="showPage('contact')" id="nav-contact">Contact</button>
+  </div>
+
+  <div class="sidebar-links">
+    <a href="https://www.linkedin.com/in/vincentricigliano/" target="_blank" class="sidebar-link">LinkedIn ↗</a>
+    <a href="https://github.com/VincentRicigliano" target="_blank" class="sidebar-link">GitHub ↗</a>
+    <a href="mailto:vricig@yahoo.com" class="sidebar-link">Email ↗</a>
+  </div>
 </nav>
 
-<main>
+<main class="main">
 
-  <!-- Hero -->
-  <section id="hero">
+  <!-- HOME -->
+  <div class="page active" id="page-home">
     <p class="hero-label">Strategic Finance · AI · Operations</p>
     <h1>Vincent<br>Ricigliano<em>.</em></h1>
     <p class="hero-bio">Finance and strategy professional with experience in financial modeling, vendor economics, and process automation. Computer Science background with growing expertise in AI-powered analysis and tool-building.</p>
-    <div class="hero-links">
-      <a href="#projects" class="btn">View Projects</a>
-      <a href="https://www.linkedin.com/in/vincentricigliano/" target="_blank" class="btn btn-ghost">LinkedIn</a>
-      <a href="https://github.com/VincentRicigliano" target="_blank" class="btn btn-ghost">GitHub</a>
-      <a href="mailto:vricig@yahoo.com" class="btn btn-ghost">Email</a>
+    <div class="hero-cta">
+      <button class="btn" onclick="showPage('experience')">Experience</button>
+      <button class="btn" onclick="showPage('education')">Education</button>
+      <button class="btn" onclick="showPage('skills')">Skills</button>
+      <button class="btn" onclick="showPage('projects'); openProjectsSub()">Projects</button>
+      <button class="btn btn-ghost" onclick="showPage('contact')">Contact</button>
     </div>
-  </section>
+  </div>
 
-  <!-- Experience -->
-  <section id="experience">
+  <!-- EXPERIENCE -->
+  <div class="page" id="page-experience">
     <div class="section-label">Experience</div>
-
-    <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Dec 2024 – Mar 2025</div>
-        <div class="exp-company">Rivian · RVT</div>
-      </div>
+    <div class="exp-item">
+      <div><div class="exp-date">Dec 2024 – Mar 2025</div><div class="exp-company">Rivian · RVT</div></div>
       <div>
         <div class="exp-title">Senior Software Strategy Associate</div>
         <div class="exp-desc">Partnered with senior software leadership to lead strategic and operational initiatives. Owned budgeting and financial tracking for the infotainment organization, analyzed forecast variance and spend trends to improve cost visibility and predictability.</div>
-        <div class="exp-tags">
-          <span class="tag">FP&amp;A</span>
-          <span class="tag">Vendor Strategy</span>
-          <span class="tag">Forecast Analysis</span>
-        </div>
+        <div class="exp-tags"><span class="tag">FP&amp;A</span><span class="tag">Vendor Strategy</span><span class="tag">Forecast Analysis</span></div>
       </div>
     </div>
-
-    <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Jan 2024 – Nov 2024</div>
-        <div class="exp-company">Rivian</div>
-      </div>
+    <div class="exp-item">
+      <div><div class="exp-date">Jan 2024 – Nov 2024</div><div class="exp-company">Rivian</div></div>
       <div>
         <div class="exp-title">Senior Strategic Purchasing Manager, Vehicle Software</div>
         <div class="exp-desc">Led strategic sourcing of a 30+ vendor software portfolio with $20M+ annual spend. Developed pricing models and cost scenarios to support negotiations. Delivered executive-level insights on vendor performance, spend trends, and financial risk.</div>
-        <div class="exp-tags">
-          <span class="tag">$20M+ Spend</span>
-          <span class="tag">Pricing Models</span>
-          <span class="tag">Executive Reporting</span>
-        </div>
+        <div class="exp-tags"><span class="tag">$20M+ Spend</span><span class="tag">Pricing Models</span><span class="tag">Executive Reporting</span></div>
       </div>
     </div>
-
-    <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Aug 2022 – Dec 2023</div>
-        <div class="exp-company">Rivian</div>
-      </div>
+    <div class="exp-item">
+      <div><div class="exp-date">Aug 2022 – Dec 2023</div><div class="exp-company">Rivian</div></div>
       <div>
         <div class="exp-title">Purchasing Manager, Vehicle Software</div>
         <div class="exp-desc">Led pricing and sourcing engagement for vehicle software vendors. Negotiated improved commercial terms contributing to over $5M in cost savings. Conducted recurring portfolio reviews with finance and accounting teams.</div>
-        <div class="exp-tags">
-          <span class="tag">$5M+ Savings</span>
-          <span class="tag">Negotiations</span>
-          <span class="tag">Portfolio Reviews</span>
-        </div>
+        <div class="exp-tags"><span class="tag">$5M+ Savings</span><span class="tag">Negotiations</span><span class="tag">Portfolio Reviews</span></div>
       </div>
     </div>
-
-    <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Jun 2021 – Sep 2021</div>
-        <div class="exp-company">Rivian</div>
-      </div>
+    <div class="exp-item">
+      <div><div class="exp-date">Jun 2021 – Sep 2021</div><div class="exp-company">Rivian</div></div>
       <div>
         <div class="exp-title">Purchasing Intern, Connected Car</div>
         <div class="exp-desc">Built automated Excel tools to track vehicle parts, reducing manual effort by ~16 hours/month. Developed a centralized digital contract repository improving transparency across finance and accounting teams.</div>
-        <div class="exp-tags">
-          <span class="tag">Automation</span>
-          <span class="tag">Excel</span>
-        </div>
+        <div class="exp-tags"><span class="tag">Automation</span><span class="tag">Excel</span></div>
       </div>
     </div>
-
-    <div class="exp-item reveal">
-      <div>
-        <div class="exp-date">Jun 2020 – Jun 2021</div>
-        <div class="exp-company">Lockheed Martin</div>
-      </div>
+    <div class="exp-item">
+      <div><div class="exp-date">Jun 2020 – Jun 2021</div><div class="exp-company">Lockheed Martin</div></div>
       <div>
         <div class="exp-title">Program Integration Analyst</div>
-        <div class="exp-desc">Team lead for cross-functional process improvement initiatives at The Skunk Works. Built Excel and VBA-based workflows that improved team efficiency by ~40%. Held DoD Secret Clearance.</div>
-        <div class="exp-tags">
-          <span class="tag">DoD Secret Clearance</span>
-          <span class="tag">VBA Automation</span>
-          <span class="tag">40% Efficiency Gain</span>
-        </div>
+        <div class="exp-desc">Team lead for cross-functional process improvement at The Skunk Works. Built Excel and VBA-based workflows that improved team efficiency by ~40%. Held DoD Secret Clearance.</div>
+        <div class="exp-tags"><span class="tag">DoD Secret Clearance</span><span class="tag">VBA Automation</span><span class="tag">40% Efficiency Gain</span></div>
       </div>
     </div>
+  </div>
 
-  </section>
-
-  <!-- Education -->
-  <section id="education">
+  <!-- EDUCATION -->
+  <div class="page" id="page-education">
     <div class="section-label">Education</div>
-
-    <div class="edu-card reveal">
+    <div class="edu-card">
       <div class="edu-header">
         <div>
           <div class="edu-school">California Polytechnic State University</div>
           <div class="edu-location">San Luis Obispo, CA &nbsp;·&nbsp; 2017 – 2021</div>
         </div>
-        <div class="edu-gpa">
+        <div>
           <div class="edu-gpa-number">3.85</div>
           <div class="edu-gpa-label">GPA</div>
         </div>
       </div>
-
       <div class="edu-degrees">
         <div>
           <div class="edu-degree-badge">Primary</div>
@@ -610,151 +447,180 @@ footer p {
           <div class="edu-degree-detail">Data Structures · Algorithms<br>Programming · Systems Design</div>
         </div>
       </div>
-
       <div class="edu-tags">
-        <span class="tag">Financial Management</span>
-        <span class="tag">Computer Science</span>
-        <span class="tag">Data Structures</span>
-        <span class="tag">Algorithms</span>
-        <span class="tag">Corporate Finance</span>
-        <span class="tag">Statistics</span>
-        <span class="tag">Investments</span>
+        <span class="tag">Financial Management</span><span class="tag">Computer Science</span><span class="tag">Data Structures</span><span class="tag">Algorithms</span><span class="tag">Corporate Finance</span><span class="tag">Statistics</span>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Skills -->
-  <section id="skills">
+  <!-- SKILLS -->
+  <div class="page" id="page-skills">
     <div class="section-label">Skills &amp; Tools</div>
     <div class="skills-grid">
-
-      <div class="reveal">
+      <div class="skill-group">
         <div class="skill-group-label">Finance</div>
-        <ul class="skill-list">
-          <li>Financial Modeling &amp; FP&amp;A</li>
-          <li>Vendor Pricing &amp; Sourcing</li>
-          <li>Budget &amp; Forecast Variance</li>
-          <li>Cost Scenario Analysis</li>
-          <li>Executive Reporting</li>
-        </ul>
+        <ul class="skill-list"><li>Financial Modeling &amp; FP&amp;A</li><li>Vendor Pricing &amp; Sourcing</li><li>Budget &amp; Forecast Variance</li><li>Cost Scenario Analysis</li><li>Executive Reporting</li></ul>
       </div>
-
-      <div class="reveal">
+      <div class="skill-group">
         <div class="skill-group-label">Technology</div>
-        <ul class="skill-list">
-          <li>Python</li>
-          <li>Excel / VBA Automation</li>
-          <li>SQL</li>
-          <li>HTML / CSS / JavaScript</li>
-          <li>LLMs &amp; AI Tooling</li>
-        </ul>
+        <ul class="skill-list"><li>Python</li><li>Excel / VBA Automation</li><li>SQL</li><li>HTML / CSS / JavaScript</li><li>LLMs &amp; AI Tooling</li></ul>
       </div>
-
-      <div class="reveal">
+      <div class="skill-group">
         <div class="skill-group-label">Strategy</div>
-        <ul class="skill-list">
-          <li>Internal Consulting</li>
-          <li>Cross-functional Collaboration</li>
-          <li>Vendor Performance Management</li>
-          <li>Contract Negotiation</li>
-          <li>Market Benchmarking</li>
-        </ul>
+        <ul class="skill-list"><li>Internal Consulting</li><li>Cross-functional Collaboration</li><li>Vendor Performance Management</li><li>Contract Negotiation</li><li>Market Benchmarking</li></ul>
       </div>
-
-      <div class="reveal">
+      <div class="skill-group">
         <div class="skill-group-label">Tools</div>
-        <ul class="skill-list">
-          <li>Claude / ChatGPT</li>
-          <li>Algolia API</li>
-          <li>Selenium / BeautifulSoup</li>
-          <li>GitHub</li>
-          <li>Jira &amp; Slack</li>
-        </ul>
+        <ul class="skill-list"><li>Claude / ChatGPT</li><li>Algolia API</li><li>Selenium / BeautifulSoup</li><li>GitHub</li><li>Jira &amp; Slack</li></ul>
       </div>
-
     </div>
-  </section>
+  </div>
 
-  <!-- Projects -->
-  <section id="projects">
-    <div class="section-label">Projects</div>
+  <!-- PROJECTS -->
+  <div class="page" id="page-projects">
+    <div id="projects-list-view">
+      <div class="section-label">Projects</div>
+      <div class="project-list">
+        <div class="project-list-item" onclick="showProject('huckberry')">
+          <div>
+            <div class="project-list-eyebrow">Strategic Finance · AI · 2026</div>
+            <div class="project-list-title">Huckberry Product Intelligence</div>
+            <div class="project-list-tags"><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">Claude AI</span><span class="tag">Algolia API</span></div>
+          </div>
+          <div class="project-list-arrow">→</div>
+        </div>
+        <div class="project-list-item" onclick="showProject('concordance')">
+          <div>
+            <div class="project-list-eyebrow">Data Structures · Cal Poly · 2019</div>
+            <div class="project-list-title">Concordance Tool</div>
+            <div class="project-list-tags"><span class="tag">Python</span><span class="tag">Hash Tables</span><span class="tag">100% Test Coverage</span></div>
+          </div>
+          <div class="project-list-arrow">→</div>
+        </div>
+      </div>
+    </div>
 
-    <div class="project-card reveal">
+    <div class="project-detail" id="project-huckberry">
+      <button class="project-back" onclick="backToProjects()">← All Projects</button>
       <div class="project-eyebrow">Strategic Finance · AI · Product Analytics · 2026</div>
       <h2 class="project-title">Huckberry Product<br><em>Intelligence Dashboard</em></h2>
       <p class="project-desc">Built in preparation for a Strategic Finance &amp; AI Analyst interview at Huckberry. Pulled Huckberry's full live product catalog by reverse-engineering their Algolia search API, then built an interactive dashboard with Claude AI-powered strategic analysis layered on top.</p>
-
       <div class="project-stats">
-        <div class="project-stat">
-          <div class="project-stat-label">Data Source</div>
-          <div class="project-stat-value">Algolia API<br>411 live SKUs</div>
-        </div>
-        <div class="project-stat">
-          <div class="project-stat-label">Stack</div>
-          <div class="project-stat-value">Python · JS<br>Claude AI</div>
-        </div>
-        <div class="project-stat">
-          <div class="project-stat-label">Output</div>
-          <div class="project-stat-value">Interactive<br>HTML Dashboard</div>
-        </div>
+        <div class="project-stat"><div class="project-stat-label">Data Source</div><div class="project-stat-value">Algolia API<br>411 live SKUs</div></div>
+        <div class="project-stat"><div class="project-stat-label">Stack</div><div class="project-stat-value">Python · JS<br>Claude AI</div></div>
+        <div class="project-stat"><div class="project-stat-label">Output</div><div class="project-stat-value">Interactive<br>HTML Dashboard</div></div>
       </div>
-
       <ul class="project-bullets">
         <li>Reverse-engineered Huckberry's Algolia product index to pull the full in-stock catalog with real pricing, discount data, and product images</li>
-        <li>Built a 3-section dashboard with sidebar navigation, sortable product table, and brand distribution charts styled to match Huckberry's brand</li>
+        <li>Built a 3-section dashboard with sidebar navigation, sortable product table, and brand distribution charts styled to Huckberry's brand</li>
         <li>Integrated Claude AI to generate strategic analyses — brand concentration, pricing strategy, margin opportunities, and a board-ready executive summary</li>
         <li>Built a Brand Expansion Radar using canvas-based data visualization, scoring 6 candidate brands across 5 strategic dimensions</li>
       </ul>
-
       <div class="project-links">
         <a href="https://VincentRicigliano.github.io/huckberry-analyzer" target="_blank" class="btn">View Live</a>
         <a href="https://github.com/VincentRicigliano/huckberry-analyzer" target="_blank" class="btn btn-ghost">GitHub</a>
       </div>
     </div>
 
-  </section>
-
-  <!-- Contact -->
-  <section id="contact">
-    <div class="section-label">Contact</div>
-    <div class="contact-grid">
-      <div class="contact-item">
-        <div class="contact-label">Email</div>
-        <a href="mailto:vricig@yahoo.com" class="contact-value">vricig@yahoo.com</a>
+    <div class="project-detail" id="project-concordance">
+      <button class="project-back" onclick="backToProjects()">← All Projects</button>
+      <div class="project-eyebrow">Data Structures · Cal Poly CSC 202 · 2019</div>
+      <h2 class="project-title">Concordance<br><em>Tool</em></h2>
+      <p class="project-desc">A from-scratch hash table implementation used to build a word concordance — an index of every word in a text file and the line numbers it appears on. Built at Cal Poly as part of CSC 202 (Data Structures), achieving 100% test coverage across 221 statements.</p>
+      <div class="project-stats">
+        <div class="project-stat"><div class="project-stat-label">Language</div><div class="project-stat-value">Python 3<br>No dependencies</div></div>
+        <div class="project-stat"><div class="project-stat-label">Coverage</div><div class="project-stat-value">100%<br>221 statements</div></div>
+        <div class="project-stat"><div class="project-stat-label">Concepts</div><div class="project-stat-value">Hash Tables<br>Quadratic Probing</div></div>
       </div>
-      <div class="contact-item">
-        <div class="contact-label">LinkedIn</div>
-        <a href="https://www.linkedin.com/in/vincentricigliano/" target="_blank" class="contact-value">vincentricigliano</a>
-      </div>
-      <div class="contact-item">
-        <div class="contact-label">GitHub</div>
-        <a href="https://github.com/VincentRicigliano" target="_blank" class="contact-value">VincentRicigliano</a>
-      </div>
-      <div class="contact-item">
-        <div class="contact-label">Phone</div>
-        <a href="tel:8056748421" class="contact-value">805.674.8421</a>
+      <ul class="project-bullets">
+        <li>Implemented a hash table from scratch using Horner's hash function and quadratic probing for collision resolution</li>
+        <li>Dynamic resizing — table doubles + 1 when load factor exceeds 0.5, maintaining O(1) average lookup</li>
+        <li>Concordance builder parses text files, strips punctuation and digits, filters stop words, and indexes every word with its line numbers</li>
+        <li>CLI interface: run directly from terminal with stop words file, input file, and output file as arguments</li>
+        <li>100% test coverage across 221 statements</li>
+      </ul>
+      <div class="project-links">
+        <a href="https://github.com/VincentRicigliano/concordance-tool" target="_blank" class="btn btn-ghost">GitHub</a>
       </div>
     </div>
-  </section>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="page" id="page-contact">
+    <div class="section-label">Contact</div>
+    <div class="contact-grid">
+      <div class="contact-item"><div class="contact-label">Email</div><a href="mailto:vricig@yahoo.com" class="contact-value">vricig@yahoo.com</a></div>
+      <div class="contact-item"><div class="contact-label">LinkedIn</div><a href="https://www.linkedin.com/in/vincentricigliano/" target="_blank" class="contact-value">vincentricigliano</a></div>
+      <div class="contact-item"><div class="contact-label">GitHub</div><a href="https://github.com/VincentRicigliano" target="_blank" class="contact-value">VincentRicigliano</a></div>
+      <div class="contact-item"><div class="contact-label">Phone</div><a href="tel:8056748421" class="contact-value">805.674.8421</a></div>
+    </div>
+  </div>
 
 </main>
 
-<footer>
-  <p>Vincent Ricigliano &nbsp;·&nbsp; 2026</p>
-</footer>
-
 <script>
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('visible'), i * 80);
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1 });
-reveals.forEach(el => observer.observe(el));
-</script>
+let projectsOpen = false;
 
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.nav-sub-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  var navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  if (name === 'projects') {
+    document.getElementById('projects-list-view').style.display = 'block';
+    document.querySelectorAll('.project-detail').forEach(p => p.classList.remove('active'));
+  }
+  setTimeout(animateVisible, 50);
+  window.scrollTo(0, 0);
+}
+
+function openProjectsSub() {
+  projectsOpen = true;
+  document.getElementById('projects-sub').classList.add('open');
+  document.getElementById('projects-arrow').classList.add('open');
+}
+
+function toggleProjects() {
+  projectsOpen = !projectsOpen;
+  document.getElementById('projects-sub').classList.toggle('open', projectsOpen);
+  document.getElementById('projects-arrow').classList.toggle('open', projectsOpen);
+  showPage('projects');
+  document.getElementById('nav-projects').classList.add('active');
+}
+
+function showProject(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-projects').classList.add('active');
+  openProjectsSub();
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.nav-sub-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('nav-projects').classList.add('active');
+  var subNav = document.getElementById('subnav-' + id);
+  if (subNav) subNav.classList.add('active');
+  document.getElementById('projects-list-view').style.display = 'none';
+  document.querySelectorAll('.project-detail').forEach(p => p.classList.remove('active'));
+  document.getElementById('project-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function backToProjects() {
+  document.getElementById('projects-list-view').style.display = 'block';
+  document.querySelectorAll('.project-detail').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-sub-item').forEach(n => n.classList.remove('active'));
+  setTimeout(animateVisible, 50);
+  window.scrollTo(0, 0);
+}
+
+function animateVisible() {
+  var targets = document.querySelectorAll('.page.active .exp-item, .page.active .edu-card, .page.active .skill-group, .page.active .project-list-item, .page.active .contact-item');
+  targets.forEach(function(el, i) {
+    setTimeout(function() { el.classList.add('visible'); }, i * 80);
+  });
+}
+
+animateVisible();
+</script>
 </body>
 </html>
