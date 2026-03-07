@@ -32,13 +32,14 @@ body {
 
 /* ── HOME ── */
 .home-wrap {
-  max-width: 900px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 80px 56px 80px;
+  padding: 80px 24px 80px;
+  text-align: center;
 }
 
 .home-header {
-  margin-bottom: 64px;
+  margin-bottom: 48px;
 }
 
 .home-label {
@@ -58,6 +59,7 @@ h1 {
   line-height: 1.05;
   letter-spacing: -0.025em;
   margin-bottom: 24px;
+  text-align: center;
   opacity: 0;
   animation: fadeUp 0.5s ease 0.2s forwards;
 }
@@ -67,8 +69,8 @@ h1 em { font-style: italic; color: var(--grey); }
 .home-bio {
   font-size: 1.05rem;
   color: var(--grey);
-  max-width: 560px;
   line-height: 1.8;
+  margin: 0 auto;
   opacity: 0;
   animation: fadeUp 0.5s ease 0.3s forwards;
 }
@@ -89,8 +91,10 @@ h1 em { font-style: italic; color: var(--grey); }
   transition: background 0.12s, border-color 0.12s;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  text-align: center;
 }
 
 .nav-card:hover {
@@ -108,13 +112,14 @@ h1 em { font-style: italic; color: var(--grey); }
   letter-spacing: 0.1em;
   color: var(--light);
   margin-bottom: 16px;
+  text-align: center;
 }
 
 .card-title {
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 400;
   line-height: 1.2;
-  margin-bottom: 8px;
+  text-align: center;
 }
 
 .card-sub {
@@ -127,25 +132,27 @@ h1 em { font-style: italic; color: var(--grey); }
   font-family: 'DM Mono', monospace;
   font-size: 0.78rem;
   color: var(--rule);
-  margin-top: 24px;
+  margin-top: 20px;
   transition: color 0.12s;
-  align-self: flex-end;
+  align-self: center;
+  text-align: center;
+  width: 100%;
 }
 
 /* wide card spans both columns */
 .nav-card-wide {
   grid-column: 1 / -1;
-  min-height: 120px;
-  flex-direction: row;
+  min-height: 90px;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
-.nav-card-wide .card-arrow { margin-top: 0; }
+.nav-card-wide .card-arrow { margin-top: 16px; }
 
 /* ── Inner pages ── */
 .inner-wrap {
-  max-width: 900px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 56px 56px 100px;
 }
@@ -449,7 +456,6 @@ h2 em { font-style: italic; color: var(--grey); }
         <div class="nav-card-top">
           <div class="card-number">01</div>
           <div class="card-title">Experience</div>
-          <div class="card-sub">Rivian · Lockheed Martin · 5 years in operations, finance, and vendor strategy</div>
         </div>
         <span class="card-arrow">→</span>
       </div>
@@ -458,7 +464,6 @@ h2 em { font-style: italic; color: var(--grey); }
         <div class="nav-card-top">
           <div class="card-number">02</div>
           <div class="card-title">Projects</div>
-          <div class="card-sub">Huckberry Intelligence Dashboard · Rivian Integrations · Concordance Tool</div>
         </div>
         <span class="card-arrow">→</span>
       </div>
@@ -467,7 +472,6 @@ h2 em { font-style: italic; color: var(--grey); }
         <div class="nav-card-top">
           <div class="card-number">03</div>
           <div class="card-title">Education</div>
-          <div class="card-sub">Cal Poly SLO · BS Business Administration · Minor Computer Science · 3.85 GPA</div>
         </div>
         <span class="card-arrow">→</span>
       </div>
@@ -476,7 +480,6 @@ h2 em { font-style: italic; color: var(--grey); }
         <div class="nav-card-top">
           <div class="card-number">04</div>
           <div class="card-title">Skills</div>
-          <div class="card-sub">Finance · Strategy · Python · AI tooling · Negotiation</div>
         </div>
         <span class="card-arrow">→</span>
       </div>
@@ -485,7 +488,6 @@ h2 em { font-style: italic; color: var(--grey); }
         <div>
           <div class="card-number">05</div>
           <div class="card-title">Contact</div>
-          <div class="card-sub">vricig@yahoo.com · 805.674.8421</div>
         </div>
         <span class="card-arrow">→</span>
       </div>
@@ -543,7 +545,7 @@ h2 em { font-style: italic; color: var(--grey); }
 <!-- ═══════════════════════════ PROJECTS ═══════════════════════════ -->
 <div class="page" id="page-projects">
   <div class="inner-wrap">
-    <button class="back-btn" onclick="backToProjects()">← Home</button>
+    <button class="back-btn" onclick="showPage('home')">← Home</button>
     <p class="page-eyebrow">Selected Work</p>
     <h2>Projects<em>.</em></h2>
     <div class="rule"></div>
@@ -794,7 +796,7 @@ h2 em { font-style: italic; color: var(--grey); }
     <h2>Contact<em>.</em></h2>
     <div class="rule"></div>
     <div class="contact-grid">
-      <div class="contact-item"><div class="contact-label">Email</div><a href="mailto:vricig@yahoo.com" class="contact-value">vricig@yahoo.com</a></div>
+      <div class="contact-item"><div class="contact-label">Email</div><a href="/cdn-cgi/l/email-protection#6610140f050f01261f070e09094805090b" class="contact-value"><span class="__cf_email__" data-cfemail="295f5b404a404e695048414646074a4644">[email&#160;protected]</span></a></div>
       <div class="contact-item"><div class="contact-label">LinkedIn</div><a href="https://www.linkedin.com/in/vincentricigliano/" target="_blank" class="contact-value">vincentricigliano</a></div>
       <div class="contact-item"><div class="contact-label">GitHub</div><a href="https://github.com/VincentRicigliano" target="_blank" class="contact-value">VincentRicigliano</a></div>
       <div class="contact-item"><div class="contact-label">Phone</div><a href="tel:8056748421" class="contact-value">805.674.8421</a></div>
@@ -802,10 +804,13 @@ h2 em { font-style: italic; color: var(--grey); }
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.project-detail').forEach(p => p.classList.remove('active'));
+  var pl = document.getElementById('projects-list');
+  if (pl) pl.style.display = 'block';
   window.scrollTo(0, 0);
 }
 
@@ -821,6 +826,13 @@ function backToProjects() {
   document.getElementById('projects-list').style.display = 'block';
   window.scrollTo(0, 0);
 }
-</script>
-</body>
-</html>
+</script><script>
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showProject(id) {
+  document.getElementById('projects-list').style.display = 'none';
+  document.querySelectorAll('.project-detail').forEach(p => p.classL
